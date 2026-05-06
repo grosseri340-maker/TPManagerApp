@@ -1,12 +1,111 @@
-﻿<Window x:Class="TPManagerApp.MainWindow"
+﻿<Window x:Class="FinanceApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TPManagerApp"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Фінанси" Height="700" Width="1000"
+        Background="#EEF1F5">
 
-    </Grid>
+    <ScrollViewer>
+        
+        <StackPanel Margin="20">
+            <TextBlock Text="Головне вікно"
+                       FontSize="30"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       Margin="0,10"/>
+            <Border Background="White" CornerRadius="15" Padding="15">
+                <StackPanel>
+                    <DockPanel>
+                        <TextBlock Text="Список карток" FontSize="18" DockPanel.Dock="Left"/>
+                        <Button Content="+ Додати карту"
+                                Foreground="Black"
+                                Padding="10,5"
+                                Margin="10,0,0,0"
+                                Click="AddCard_Click"/>
+                    </DockPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,10">
+                        <Border Width="180" Height="110" CornerRadius="15" Margin="5"
+                                Background="blue">
+                            <StackPanel Margin="10">
+                                <TextBlock Text="VISA" Foreground="White"/>
+                                <TextBlock Text="**** 1234" Foreground="White"/>
+                                <TextBlock Text="12450 грн" Foreground="White" FontSize="16"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Width="180" Height="110" CornerRadius="15" Margin="5"
+                                Background="green">
+                            <StackPanel Margin="10">
+                                <TextBlock Text="MasterCard" Foreground="White"/>
+                                <TextBlock Text="**** 5678" Foreground="White"/>
+                                <TextBlock Text="28760 грн" Foreground="White"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Width="180" Height="110" CornerRadius="15" Margin="5"
+                                Background="MediumPurple">
+                            <StackPanel Margin="10">
+                                <TextBlock Text="Mono" Foreground="White"/>
+                                <TextBlock Text="**** 9012" Foreground="White"/>
+                                <TextBlock Text="8230 грн" Foreground="White"/>
+                            </StackPanel>
+                        </Border>
+
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Background="White" CornerRadius="15" Padding="15" Margin="0,10">
+                <StackPanel>
+
+                    <TextBlock Text="Список категорій" FontSize="18" HorizontalAlignment="Center"/>
+
+                    <ListBox x:Name="CategoryList" Margin="0,10">
+                        <ListBoxItem>Продукти - 7500 грн 30%)</ListBoxItem>
+                        <ListBoxItem>Транспорт - 3200 грн (15%)</ListBoxItem>
+                        <ListBoxItem>Догляд - 5600 грн (25%)</ListBoxItem>
+                        <ListBoxItem>Розваги - 2300 грн (10%)</ListBoxItem>
+                    </ListBox>
+
+                </StackPanel>
+            </Border>
+
+            <WrapPanel HorizontalAlignment="Center" Margin="0,10">
+
+                <Button Content="Додати категорію"
+                        Width="200" Height="50" Margin="5"
+                        Background="red" Foreground="White"
+                        Click="AddCategory_Click"/>
+
+                <Button Content="Банкова операція"
+                        Width="200" Height="50" Margin="5"
+                        Background="green" Foreground="White"
+                        Click="Operation_Click"/>
+
+                <Button Content="Історія витрат"
+                        Width="200" Height="50" Margin="5"
+                        Background="blue" Foreground="White"
+                        Click="History_Click"/>
+
+                <Button Content="Топ категорій"
+                        Width="200" Height="50" Margin="5"
+                        Background="Purple" Foreground="White"
+                        Click="TopCategory_Click"/>
+
+                <Button Content="Відсоток категорії"
+                        Width="200" Height="50" Margin="5"
+                        Background="Orange" Foreground="White"
+                        Click="Percent_Click"/>
+
+            </WrapPanel>
+
+            <Button Content="Змінити акаунт"
+                    Height="45"
+                    Width="250"
+                    HorizontalAlignment="Center"
+                    Background="#E5E7EB"
+                    Click="ChangeAccount_Click"/>
+
+        </StackPanel>
+    </ScrollViewer>
 </Window>
