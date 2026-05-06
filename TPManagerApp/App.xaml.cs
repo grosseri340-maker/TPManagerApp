@@ -1,6 +1,8 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Windows;
+using Microsoft.EntityFrameworkCore;
 
 namespace TPManagerApp
 {
@@ -9,6 +11,15 @@ namespace TPManagerApp
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            using (var db = new DBContext())
+            {
+                db.Database.Migrate();
+            }
+        }
     }
 
 }
