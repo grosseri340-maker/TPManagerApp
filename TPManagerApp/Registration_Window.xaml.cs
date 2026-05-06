@@ -6,6 +6,7 @@ namespace TPManagerApp
     {
         public Registration_Window()
         {
+
             InitializeComponent();
         }
 
@@ -25,6 +26,12 @@ namespace TPManagerApp
 
             RegistrationPanel.Visibility = Visibility.Hidden;
             SuccessPanel.Visibility = Visibility.Visible;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            LoginWindow login = new LoginWindow();
+            login.Show();
         }
     }
 }
