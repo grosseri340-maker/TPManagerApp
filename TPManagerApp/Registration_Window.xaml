@@ -6,7 +6,7 @@
     <Grid>
         <DockPanel x:Name="RegistrationPanel" Margin="50">
 
-            <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="18">
+            <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="19">
                 Registration
             </Label>
 
