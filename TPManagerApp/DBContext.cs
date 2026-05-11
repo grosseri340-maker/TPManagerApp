@@ -58,6 +58,12 @@ namespace TPManagerApp
                       .IsRequired()
                       .HasMaxLength(100);
             });
+
+            modelBuilder.Entity<Category>().HasData(
+                 new Category { Id = 1, Name = "Продукти" },
+                 new Category { Id = 2, Name = "Транспорт" },
+                 new Category { Id = 3, Name = "Розваги" }
+            );
         }
     }
 }

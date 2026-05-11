@@ -34,6 +34,11 @@ namespace TPManagerApp
             db.SaveChanges();
         }
 
+        public List<Category> GetCategories()
+        {
+            return db.Categories.ToList();
+        }
+
         public void AddCard(int userId, decimal cash)
         {
             if (cash < 0)
@@ -282,6 +287,20 @@ namespace TPManagerApp
 
                 place++;
             }
+        }
+
+        public decimal GetSum(int categoryId)
+        {
+            DateTime startDate = DateTime.Now.AddMonths(-1);
+            DateTime endDate = DateTime.Now;
+
+            var totalExpenses = db.Operations
+                .Where(o => o.CategoryId == categoryId
+                         && o.Date >= startDate
+                         && o.Date <= endDate)
+                .Sum(o => (decimal?)o.CashAmount) ?? 0;
+
+            return totalExpenses;
         }
     }
 }
