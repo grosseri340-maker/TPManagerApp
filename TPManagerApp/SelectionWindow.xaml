@@ -1,0 +1,43 @@
+﻿<Window x:Class="TPManagerApp.SelectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TPManagerApp"
+        mc:Ignorable="d"
+Title="Welcome" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Border VerticalAlignment="Center" HorizontalAlignment="Center" 
+                Background="White" CornerRadius="20" Padding="40" Width="350">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="25" Color="#D0D7E1" ShadowDepth="4" Opacity="0.6"/>
+            </Border.Effect>
+            <StackPanel>
+                <TextBlock Text="TP Manager" FontSize="28" FontWeight="Bold" 
+                           HorizontalAlignment="Center" Margin="0,0,0,10" Foreground="#333"/>
+                <TextBlock Text="Оберіть дію, щоб продовжити" Foreground="Gray" 
+                           HorizontalAlignment="Center" Margin="0,0,0,30" FontSize="14"/>
+
+                <Button Content="Увійти" Click="GoToLogin_Click" Height="45" 
+                        Background="#000" Foreground="White" FontWeight="SemiBold" 
+                        Cursor="Hand" Margin="0,0,0,15">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="22"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+                <Button Content="Реєстрація" Click="GoToRegister_Click" Height="45" 
+                        Background="White" Foreground="#333" FontWeight="SemiBold" 
+                        Cursor="Hand" BorderBrush="#DDD" BorderThickness="1.5">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="22"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

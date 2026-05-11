@@ -36,5 +36,12 @@ namespace TPManagerApp
                 txtPass.Clear();
             }
         }
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            SelectionWindow selection = new SelectionWindow();
+            selection.Show();
+            this.Close();
         }
+
+    }
 }
