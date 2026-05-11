@@ -7,6 +7,7 @@ namespace TPManagerApp
     {
         public int Id { get; set; }
         public decimal Cash { get; set; }
+        public long CardNumber { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
         public ICollection<Operation> Operations { get; set; } 

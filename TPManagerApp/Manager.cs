@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -158,28 +159,128 @@ namespace TPManagerApp
                     throw new ArgumentException("Invalid period");
             }
         }
-
-        public static void ShowTopCategories(DBContext context, PeriodType period, DateTime date, int top = 5)
+        public void AddCashToCard(int cardId, decimal amount)
         {
-            var (start, end) = GetPeriodRange(date, period);
+            if (amount <= 0)
+                throw new ArgumentException("Amount must be greater than 0");
 
-            var result = context.Operations
-                .Where(o => o.Date >= start && o.Date < end)
-                .GroupBy(o => o.Category.Name)
-                .Select(g => new 
-                {
-                    Category = g.Key,
-                    Total = g.Sum(o => o.CashAmount)
-                })
-                .OrderByDescending(x => x.Total)
-                .Take(top)
+            var card = db.CreditCards.FirstOrDefault(c => c.Id == cardId);
+
+            if (card == null)
+                throw new Exception("Card not found");
+
+            card.Cash += amount;
+
+            db.SaveChanges();
+
+            Console.WriteLine($"Successfully added {amount} to card.");
+            Console.WriteLine($"Current balance: {card.Cash}");
+        }
+
+        public void ShowExpenseHistory(DateTime date, PeriodType period)
+        {
+            var range = GetPeriodRange(date, period);
+
+            var operations = db.Operations
+                .Include(o => o.Category)
+                .Include(o => o.CreditCard)
+                .Where(o => o.Date >= range.start && o.Date < range.end)
+                .OrderByDescending(o => o.Date)
                 .ToList();
 
-            Console.WriteLine($"Top {top} categories for {period}:");
-
-            foreach (var item in result)
+            if (!operations.Any())
             {
-                Console.WriteLine($"{item.Category} - {item.Total}");
+                Console.WriteLine("No operations found.");
+                return;
+            }
+
+            Console.WriteLine($"Expense history for {period}:");
+
+            foreach (var op in operations)
+            {
+                Console.WriteLine(
+                    $"Date: {op.Date} | " +
+                    $"Category: {op.Category.Name} | " +
+                    $"Amount: {op.CashAmount}"
+                );
+            }
+
+            Console.WriteLine($"Total expenses: {operations.Sum(o => o.CashAmount)}");
+        }
+
+        public void ShowExpensePercentages(DateTime date, PeriodType period)
+        {
+            var range = GetPeriodRange(date, period);
+
+            var operations = db.Operations
+                .Include(o => o.Category)
+                .Where(o => o.Date >= range.start && o.Date < range.end)
+                .ToList();
+
+            if (!operations.Any())
+            {
+                Console.WriteLine("No operations found.");
+                return;
+            }
+
+            decimal totalExpenses = operations.Sum(o => o.CashAmount);
+
+            var grouped = operations
+                .GroupBy(o => o.Category.Name)
+                .Select(g => new
+                {
+                    Category = g.Key,
+                    Total = g.Sum(x => x.CashAmount),
+                    Percent = (g.Sum(x => x.CashAmount) / totalExpenses) * 100
+                })
+                .OrderByDescending(x => x.Total);
+
+            Console.WriteLine($"Expense percentages for {period}:");
+
+            foreach (var item in grouped)
+            {
+                Console.WriteLine(
+                    $"{item.Category} : " +
+                    $"{item.Total} ({item.Percent}%)"
+                );
+            }
+
+            Console.WriteLine($"Total expenses: {totalExpenses}");
+        }
+
+        public void ShowTopCategories(DateTime date, PeriodType period)
+        {
+            var range = GetPeriodRange(date, period);
+
+            var topCategories = db.Operations
+                .Include(o => o.Category)
+                .Where(o => o.Date >= range.start && o.Date < range.end)
+                .GroupBy(o => o.Category.Name)
+                .Select(g => new
+                {
+                    Category = g.Key,
+                    TotalSpent = g.Sum(x => x.CashAmount)
+                })
+                .OrderByDescending(x => x.TotalSpent)
+                .ToList();
+
+            if (!topCategories.Any())
+            {
+                Console.WriteLine("No operations found.");
+                return;
+            }
+
+            Console.WriteLine($"Top categories for {period}:");
+
+            int place = 1;
+
+            foreach (var category in topCategories)
+            {
+                Console.WriteLine(
+                    $"{place}. {category.Category} - {category.TotalSpent}"
+                );
+
+                place++;
             }
         }
     }
