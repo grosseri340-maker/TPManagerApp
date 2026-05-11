@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using TPManagerApp;
 
 namespace FinanceApp
 {
@@ -43,5 +44,16 @@ namespace FinanceApp
         {
             MessageBox.Show("Зміна акаунту");
         }
+        private void btnCategoryPercent_Click(object sender, RoutedEventArgs e)
+        {
+            FinanceAnalytics analytics = new FinanceAnalytics();
+            // Тимчасові дані для перевірки (потім замінить на реальні з полів)
+            double totalValue = 10000;
+            double categoryValue = 2500;
+            double percent = analytics.CalculatePercentage(totalValue, categoryValue);
+            // Виводимо результат (наприклад, у MessageBox, щоб швидко перевірити)
+            MessageBox.Show($"Ця категорія займає {percent}% від загального бюджету", "Аналітика");
+        }
+
     }
 }
