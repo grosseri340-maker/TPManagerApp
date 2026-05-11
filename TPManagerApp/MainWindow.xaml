@@ -91,11 +91,12 @@
                         Width="200" Height="50" Margin="5"
                         Background="Purple" Foreground="White"
                         Click="TopCategory_Click"/>
-
                 <Button Content="Відсоток категорії"
                         Width="200" Height="50" Margin="5"
                         Background="Orange" Foreground="White"
-                        Click="Percent_Click"/>
+                        Click="btnCategoryPercent_Click"/>
+
+
 
             </WrapPanel>
 
@@ -107,5 +108,6 @@
                     Click="ChangeAccount_Click"/>
 
         </StackPanel>
+        
     </ScrollViewer>
 </Window>
