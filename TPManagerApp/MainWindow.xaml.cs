@@ -1,12 +1,32 @@
 ﻿using System.Windows;
+using TPManagerApp;
 
 namespace FinanceApp
 {
     public partial class MainWindow : Window
     {
+        Manager manager = new Manager();
+
+        private void ShowCategories()
+        {
+            CategoryList.Items.Clear();
+
+            var categories = manager.GetCategories();
+
+            foreach(var c in categories)
+            {
+                decimal sum = manager.GetSum(c.Id);
+
+                CategoryList.Items.Add($"{c.Name} - {sum}грн");
+            }
+        }
+
         public MainWindow()
         {
+            
             InitializeComponent();
+
+            ShowCategories();
         }
 
         private void AddCard_Click(object sender, RoutedEventArgs e)

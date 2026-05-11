@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using FinanceApp;
+using System.Windows;
 
 namespace TPManagerApp
 {
