@@ -23,15 +23,16 @@ namespace TPManagerApp
                 MessageBox.Show("Заповніть всі поля!");
                 return;
             }
-
+        
             RegistrationPanel.Visibility = Visibility.Hidden;
             SuccessPanel.Visibility = Visibility.Visible;
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            LoginWindow login = new LoginWindow();
-            login.Show();
+            SelectionWindow selection = new SelectionWindow();
+            selection.Show();
+            this.Close();
         }
+
     }
 }
