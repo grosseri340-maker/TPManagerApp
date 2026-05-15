@@ -13,6 +13,9 @@ namespace TPManagerApp
 
         private void Register_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow window1 = new MainWindow();
+            window1.ShowDialog();
+
             if (PasswordBox1.Password != PasswordBox2.Password)
             {
                 MessageBox.Show("Паролі не співпадають!");
