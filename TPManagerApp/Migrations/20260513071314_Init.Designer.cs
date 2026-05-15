@@ -12,8 +12,8 @@ using TPManagerApp;
 namespace TPManagerApp.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20260506160227_Initialise")]
-    partial class Initialise
+    [Migration("20260513071314_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,23 @@ namespace TPManagerApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Продукти"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Транспорт"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Розваги"
+                        });
                 });
 
             modelBuilder.Entity("TPManagerApp.CreditCard", b =>
@@ -50,6 +67,13 @@ namespace TPManagerApp.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<long>("CardNumber")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("CardType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Cash")
                         .HasColumnType("decimal(18,2)");
@@ -62,6 +86,24 @@ namespace TPManagerApp.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("CreditCards");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CardNumber = 1234567890123456L,
+                            CardType = "Visa",
+                            Cash = 1000.00m,
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CardNumber = 9876543210987654L,
+                            CardType = "MasterCard",
+                            Cash = 500.50m,
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("TPManagerApp.Operation", b =>
@@ -84,6 +126,10 @@ namespace TPManagerApp.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -91,6 +137,35 @@ namespace TPManagerApp.Migrations
                     b.HasIndex("CreditCardId");
 
                     b.ToTable("Operations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CashAmount = 1250.50m,
+                            CategoryId = 1,
+                            CreditCardId = 1,
+                            Date = new DateTime(2026, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Grocery Shopping"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CashAmount = 299.99m,
+                            CategoryId = 3,
+                            CreditCardId = 1,
+                            Date = new DateTime(2026, 5, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Netflix Subscription"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CashAmount = 1800.00m,
+                            CategoryId = 2,
+                            CreditCardId = 1,
+                            Date = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Fuel Payment"
+                        });
                 });
 
             modelBuilder.Entity("TPManagerApp.User", b =>
@@ -118,6 +193,15 @@ namespace TPManagerApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Login = "sheisty145",
+                            Password = "ybuuf16",
+                            UserName = "LilSneako"
+                        });
                 });
 
             modelBuilder.Entity("TPManagerApp.CreditCard", b =>

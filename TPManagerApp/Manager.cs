@@ -1,10 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TPManagerApp
 {
@@ -38,8 +41,14 @@ namespace TPManagerApp
         {
             return db.Categories.ToList();
         }
+        public List<CreditCard> GetCards(int userId)
+        {
+            return db.CreditCards
+                .Where(c => c.UserId == userId)
+                .ToList();
+        }
 
-        public void AddCard(int userId, decimal cash)
+        public void AddCard(string bank, long number, int userId, decimal cash = 0)
         {
             if (cash < 0)
                 throw new ArgumentException("Initial cash cannot be negative");
@@ -51,6 +60,8 @@ namespace TPManagerApp
             var card = new CreditCard
             {
                 Cash = cash,
+                CardType = bank,
+                CardNumber = number,
                 UserId = userId
             };
 
@@ -61,84 +72,31 @@ namespace TPManagerApp
             db.SaveChanges();
         }
 
-        public void AddOperation(int userId, int creditCardId, decimal amount, int categoryId)
+        public void AddOperation(int userId, int creditCardId, decimal amount, int categoryId, string name = "Операція без назви")
         {
             var card = db.CreditCards
                 .FirstOrDefault(c => c.Id == creditCardId && c.UserId == userId);
 
             if (card == null)
+                throw new Exception("Картку не знайдено");
+
+            if (card.Cash < amount)
+                throw new Exception("Недостатньо коштів");
+
+            card.Cash -= amount;
+
+            var operation = new Operation
             {
-                Console.WriteLine("Card not found!");
-                return;
-            }
+                Name = name,
+                CashAmount = amount,
+                Date = DateTime.Now,
+                CreditCardId = card.Id,
+                CategoryId = categoryId
+            };
 
-            while (true)
-            {
-                if (card.Cash >= amount)
-                {
-                    card.Cash -= amount;
+            db.Operations.Add(operation);
 
-                    var operation = new Operation
-                    {
-                        CashAmount = amount,
-                        Date = DateTime.Now,
-                        CreditCardId = card.Id,
-                        CategoryId = categoryId
-                    };
-
-                    db.Operations.Add(operation);
-                    db.SaveChanges();
-
-                    Console.WriteLine("Operation successful!");
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Not enough money on this card!");
-                    Console.WriteLine("1 - Cancel operation");
-                    Console.WriteLine("2 - Choose another card");
-
-                    var choice = Console.ReadLine();
-
-                    if (choice == "1")
-                    {
-                        Console.WriteLine("Operation canceled.");
-                        break;
-                    }
-                    else if (choice == "2")
-                    {
-                        var userCards = db.CreditCards
-                            .Where(c => c.UserId == userId)
-                            .ToList();
-
-                        Console.WriteLine("Your cards:");
-
-                        foreach (var c in userCards)
-                        {
-                            Console.WriteLine($"Id: {c.Id}, Cash: {c.Cash}");
-                        }
-
-                        Console.Write("Enter new card Id: ");
-                        if (int.TryParse(Console.ReadLine(), out int newCardId))
-                        {
-                            var newCard = userCards.FirstOrDefault(c => c.Id == newCardId);
-
-                            if (newCard != null)
-                            {
-                                card = newCard;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Invalid card id!");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid choice!");
-                    }
-                }
-            }
+            db.SaveChanges();
         }
 
         public static (DateTime start, DateTime end) GetPeriodRange(DateTime date, PeriodType period)
@@ -182,35 +140,16 @@ namespace TPManagerApp
             Console.WriteLine($"Current balance: {card.Cash}");
         }
 
-        public void ShowExpenseHistory(DateTime date, PeriodType period)
+        public List<Operation> GetOperations(DateTime date, PeriodType period)
         {
             var range = GetPeriodRange(date, period);
 
-            var operations = db.Operations
+            return db.Operations
                 .Include(o => o.Category)
                 .Include(o => o.CreditCard)
                 .Where(o => o.Date >= range.start && o.Date < range.end)
                 .OrderByDescending(o => o.Date)
                 .ToList();
-
-            if (!operations.Any())
-            {
-                Console.WriteLine("No operations found.");
-                return;
-            }
-
-            Console.WriteLine($"Expense history for {period}:");
-
-            foreach (var op in operations)
-            {
-                Console.WriteLine(
-                    $"Date: {op.Date} | " +
-                    $"Category: {op.Category.Name} | " +
-                    $"Amount: {op.CashAmount}"
-                );
-            }
-
-            Console.WriteLine($"Total expenses: {operations.Sum(o => o.CashAmount)}");
         }
 
         public void ShowExpensePercentages(DateTime date, PeriodType period)
@@ -253,40 +192,27 @@ namespace TPManagerApp
             Console.WriteLine($"Total expenses: {totalExpenses}");
         }
 
-        public void ShowTopCategories(DateTime date, PeriodType period)
+        public class TopCategory()
+        {
+            public string CategoryName { get; set; }
+            public decimal TotalSpent { get; set; }
+        }
+
+        public List<TopCategory> GetTopCategories(DateTime date, PeriodType period)
         {
             var range = GetPeriodRange(date, period);
 
-            var topCategories = db.Operations
+            return db.Operations
                 .Include(o => o.Category)
                 .Where(o => o.Date >= range.start && o.Date < range.end)
                 .GroupBy(o => o.Category.Name)
-                .Select(g => new
+                .Select(g => new TopCategory
                 {
-                    Category = g.Key,
+                    CategoryName = g.Key,
                     TotalSpent = g.Sum(x => x.CashAmount)
                 })
                 .OrderByDescending(x => x.TotalSpent)
                 .ToList();
-
-            if (!topCategories.Any())
-            {
-                Console.WriteLine("No operations found.");
-                return;
-            }
-
-            Console.WriteLine($"Top categories for {period}:");
-
-            int place = 1;
-
-            foreach (var category in topCategories)
-            {
-                Console.WriteLine(
-                    $"{place}. {category.Category} - {category.TotalSpent}"
-                );
-
-                place++;
-            }
         }
 
         public decimal GetSum(int categoryId)
@@ -298,7 +224,7 @@ namespace TPManagerApp
                 .Where(o => o.CategoryId == categoryId
                          && o.Date >= startDate
                          && o.Date <= endDate)
-                .Sum(o => (decimal?)o.CashAmount) ?? 0;
+                .Sum(o => o.CashAmount);
 
             return totalExpenses;
         }
