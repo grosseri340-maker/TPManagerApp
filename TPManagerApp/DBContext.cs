@@ -64,6 +64,65 @@ namespace TPManagerApp
                  new Category { Id = 2, Name = "Транспорт" },
                  new Category { Id = 3, Name = "Розваги" }
             );
+
+            modelBuilder.Entity<CreditCard>().HasData(
+                new CreditCard
+                {
+                    Id = 1,
+                    CardNumber = 1234567890123456,
+                    CardType = "Visa",
+                    Cash = 1000.00m,
+                    UserId = 1
+                },
+                new CreditCard
+                {
+                    Id = 2,
+                    CardNumber = 9876543210987654,
+                    CardType = "MasterCard",
+                    Cash = 500.50m,
+                    UserId = 1
+                }
+            );
+
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1,
+                    UserName = "LilSneako",
+                    Login = "sheisty145",
+                    Password = "ybuuf16" 
+                }
+            );
+
+            modelBuilder.Entity<Operation>().HasData(
+                new Operation
+                {
+                    Id = 1,
+                    Name = "Grocery Shopping",
+                    CashAmount = 1250.50m,
+                    Date = new DateTime(2026, 5, 10),
+                    CreditCardId = 1,
+                    CategoryId = 1
+                },
+                new Operation
+                {
+                    Id = 2,
+                    Name = "Netflix Subscription",
+                    CashAmount = 299.99m,
+                    Date = new DateTime(2026, 5, 11),
+                    CreditCardId = 1,
+                    CategoryId = 3
+                },
+                new Operation
+                {
+                    Id = 3,
+                    Name = "Fuel Payment",
+                    CashAmount = 1800.00m,
+                    Date = new DateTime(2026, 5, 12),
+                    CreditCardId = 1,
+                    CategoryId = 2
+                }
+            );
         }
     }
 }

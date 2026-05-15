@@ -1,0 +1,55 @@
+﻿<Window x:Class="TPManagerApp.OperationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Додавання операції"
+        Height="500"
+        Width="400"
+        Background="#EEF1F5"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Margin="20">
+
+        <Border Background="White"
+                CornerRadius="15"
+                Padding="20">
+
+            <StackPanel>
+
+                <TextBlock Text="Нова операція"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,20"/>
+
+                <TextBlock Text="Назва операції"/>
+                <TextBox x:Name="NameBox"
+                         Height="35"
+                         Margin="0,5,0,15"/>
+
+                <TextBlock Text="Сума"/>
+                <TextBox x:Name="AmountBox"
+                         Height="35"
+                         Margin="0,5,0,15"/>
+
+                <TextBlock Text="Карта"/>
+                <ComboBox x:Name="CardComboBox"
+                          Height="35"
+                          Margin="0,5,0,15"
+                          DisplayMemberPath="CardNumber"/>
+
+                <TextBlock Text="Категорія"/>
+                <ComboBox x:Name="CategoryComboBox"
+                          Height="35"
+                          Margin="0,5,0,20"
+                          DisplayMemberPath="Name"/>
+
+                <Button Content="Додати операцію"
+                        Height="45"
+                        Background="Green"
+                        Foreground="White"
+                        FontSize="16"
+                        Click="AddOperation_Click"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

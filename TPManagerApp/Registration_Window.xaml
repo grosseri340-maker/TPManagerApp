@@ -11,19 +11,19 @@
             </Label>
 
             <Label DockPanel.Dock="Top">Name</Label>
-            <TextBox x:Name="NameBox" Width="350" DockPanel.Dock="Top"/>
+            <TextBox x:Name="NameBox" Width="298" DockPanel.Dock="Top"/>
 
             <Label DockPanel.Dock="Top">Surname</Label>
-            <TextBox x:Name="SurnameBox" Width="350" DockPanel.Dock="Top"/>
+            <TextBox x:Name="SurnameBox" Width="298" DockPanel.Dock="Top"/>
 
             <Label DockPanel.Dock="Top">Email</Label>
-            <TextBox x:Name="EmailBox" Width="350" DockPanel.Dock="Top"/>
+            <TextBox x:Name="EmailBox" Width="298" DockPanel.Dock="Top"/>
 
             <Label DockPanel.Dock="Top">Password</Label>
-            <PasswordBox x:Name="PasswordBox1" Width="350" DockPanel.Dock="Top"/>
+            <PasswordBox x:Name="PasswordBox1" Width="299" DockPanel.Dock="Top"/>
 
             <Label DockPanel.Dock="Top">Confirm Password</Label>
-            <PasswordBox x:Name="PasswordBox2" Width="350" DockPanel.Dock="Top"/>
+            <PasswordBox x:Name="PasswordBox2" Width="298" DockPanel.Dock="Top"/>
 
             <Button DockPanel.Dock="Top"
                     Background="Green"

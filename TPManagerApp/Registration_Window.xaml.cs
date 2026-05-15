@@ -27,6 +27,9 @@ namespace TPManagerApp
         
             RegistrationPanel.Visibility = Visibility.Hidden;
             SuccessPanel.Visibility = Visibility.Visible;
+
+            MainWindow window1 = new MainWindow();
+            window1.ShowDialog();
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {

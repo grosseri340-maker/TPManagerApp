@@ -1,8 +1,12 @@
-﻿namespace TPManagerApp
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TPManagerApp
 {
     public class Operation
     {
         public int Id { get; set; }
+        public string Name { get; set; }
+        [Required]
         public decimal CashAmount { get; set; }
         public DateTime Date { get; set; }
         public int CreditCardId { get; set; }

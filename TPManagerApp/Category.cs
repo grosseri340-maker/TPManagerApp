@@ -5,7 +5,7 @@ namespace TPManagerApp
     public class Category
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Category name is required")]
+        [Required(ErrorMessage = "Назва категорії обов'язкова")]
         [MinLength(1)]
         public string Name { get; set; }
         public ICollection<Operation> Operations { get; set; }

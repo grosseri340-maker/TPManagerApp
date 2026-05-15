@@ -83,6 +83,24 @@ namespace TPManagerApp.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("CreditCards");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CardNumber = 1234567890123456L,
+                            CardType = "Visa",
+                            Cash = 1000.00m,
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CardNumber = 9876543210987654L,
+                            CardType = "MasterCard",
+                            Cash = 500.50m,
+                            UserId = 1
+                        });
                 });
 
             modelBuilder.Entity("TPManagerApp.Operation", b =>
@@ -105,6 +123,10 @@ namespace TPManagerApp.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -112,6 +134,35 @@ namespace TPManagerApp.Migrations
                     b.HasIndex("CreditCardId");
 
                     b.ToTable("Operations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CashAmount = 1250.50m,
+                            CategoryId = 1,
+                            CreditCardId = 1,
+                            Date = new DateTime(2026, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Grocery Shopping"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CashAmount = 299.99m,
+                            CategoryId = 3,
+                            CreditCardId = 1,
+                            Date = new DateTime(2026, 5, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Netflix Subscription"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CashAmount = 1800.00m,
+                            CategoryId = 2,
+                            CreditCardId = 1,
+                            Date = new DateTime(2026, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Fuel Payment"
+                        });
                 });
 
             modelBuilder.Entity("TPManagerApp.User", b =>
@@ -139,6 +190,15 @@ namespace TPManagerApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Login = "sheisty145",
+                            Password = "ybuuf16",
+                            UserName = "LilSneako"
+                        });
                 });
 
             modelBuilder.Entity("TPManagerApp.CreditCard", b =>
