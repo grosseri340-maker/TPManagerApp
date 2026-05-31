@@ -36,17 +36,17 @@ namespace TPManagerApp
 
             try
             {
-                manager.Register(NameBox.Text, EmailBox.Text, PasswordBox1.Password);
+                User user = manager.Register(NameBox.Text, EmailBox.Text, PasswordBox1.Password);
                 MessageBox.Show("Користувача успішно додано!");
+
+                MainWindow window1 = new MainWindow(user.Id);
+                window1.ShowDialog();
+                Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-
-            MainWindow window1 = new MainWindow();
-            window1.ShowDialog();
-            Close();
         }
     }
 }

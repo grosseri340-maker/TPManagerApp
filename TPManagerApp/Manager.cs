@@ -49,6 +49,11 @@ namespace TPManagerApp
                 .ToList();
         }
 
+        public List<User> GetUsers()
+        {
+            return db.Users.ToList();
+        }
+
         public void AddCard(string bank, long number, int userId, decimal cash = 0)
         {
             if (cash < 0)
@@ -105,7 +110,7 @@ namespace TPManagerApp
             return db.Users.Any(u => u.Login == Email);
         }
 
-        public void Register(string Name, string Email, string Pass)
+        public User Register(string Name, string Email, string Pass)
         {
             User user = new User
             {
@@ -117,6 +122,7 @@ namespace TPManagerApp
             db.Users.Add(user);
             db.SaveChanges();
 
+            return user;
         }
 
         public static (DateTime start, DateTime end) GetPeriodRange(DateTime date, PeriodType period)

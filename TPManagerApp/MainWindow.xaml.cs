@@ -8,7 +8,7 @@ namespace FinanceApp
     public partial class MainWindow : Window
     {
         Manager manager = new Manager();
-        int activeID = 1;
+        int activeID;
 
         private void ShowCategories()
         {
@@ -83,9 +83,10 @@ namespace FinanceApp
             }
         }
 
-        public MainWindow()
+        public MainWindow(int Id)
         {
             InitializeComponent();
+            int activeID = Id;
 
             ShowCategories();
             ShowCards();
