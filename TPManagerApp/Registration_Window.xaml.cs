@@ -1,12 +1,16 @@
 ﻿using FinanceApp;
+using Microsoft.Win32;
 using System.Windows;
 
 namespace TPManagerApp
 {
     public partial class Registration_Window : Window
     {
+        Manager manager = new Manager();
+
         public Registration_Window()
         {
+
             InitializeComponent();
         }
 
@@ -18,17 +22,31 @@ namespace TPManagerApp
                 return;
             }
 
-            if (NameBox.Text == "" || SurnameBox.Text == "" || EmailBox.Text == "")
+            if (NameBox.Text == "" || PasswordBox1.Password == "" || EmailBox.Text == "")
             {
                 MessageBox.Show("Заповніть всі поля!");
                 return;
             }
 
-            RegistrationPanel.Visibility = Visibility.Hidden;
-            SuccessPanel.Visibility = Visibility.Visible;
+            if (manager.userExists(EmailBox.Text))
+            {
+                MessageBox.Show("Користувач з таким логіном вже існує!");
+                return;
+            }
+
+            try
+            {
+                manager.Register(NameBox.Text, EmailBox.Text, PasswordBox1.Password);
+                MessageBox.Show("Користувача успішно додано!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
             MainWindow window1 = new MainWindow();
             window1.ShowDialog();
+            Close();
         }
     }
 }

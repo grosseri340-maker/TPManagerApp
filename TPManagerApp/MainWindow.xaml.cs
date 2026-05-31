@@ -157,7 +157,9 @@ namespace FinanceApp
 
         private void Percent_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Відсоток категорії");
+            ExpenseGraph EGwindow = new ExpenseGraph();
+            EGwindow.ShowDialog();
+
         }
 
         private void ChangeAccount_Click(object sender, RoutedEventArgs e)

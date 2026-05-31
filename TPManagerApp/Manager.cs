@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TPManagerApp
@@ -99,6 +100,25 @@ namespace TPManagerApp
             db.SaveChanges();
         }
 
+        public bool userExists(string Email)
+        {
+            return db.Users.Any(u => u.Login == Email);
+        }
+
+        public void Register(string Name, string Email, string Pass)
+        {
+            User user = new User
+            {
+                UserName = Name,
+                Login = Email,
+                Password = Pass
+            };
+
+            db.Users.Add(user);
+            db.SaveChanges();
+
+        }
+
         public static (DateTime start, DateTime end) GetPeriodRange(DateTime date, PeriodType period)
         {
             switch (period)
@@ -152,7 +172,14 @@ namespace TPManagerApp
                 .ToList();
         }
 
-        public void ShowExpensePercentages(DateTime date, PeriodType period)
+        public class ExpensePercent
+        {
+            public string Category { get; set; }
+            public decimal Total { get; set; }
+            public decimal Percent { get; set; }
+        }
+
+        public List<ExpensePercent> GetExpensePercentages(DateTime date, PeriodType period)
         {
             var range = GetPeriodRange(date, period);
 
@@ -162,34 +189,20 @@ namespace TPManagerApp
                 .ToList();
 
             if (!operations.Any())
-            {
-                Console.WriteLine("No operations found.");
-                return;
-            }
+                return new List<ExpensePercent>();
 
             decimal totalExpenses = operations.Sum(o => o.CashAmount);
 
-            var grouped = operations
+            return operations
                 .GroupBy(o => o.Category.Name)
-                .Select(g => new
+                .Select(g => new ExpensePercent
                 {
                     Category = g.Key,
                     Total = g.Sum(x => x.CashAmount),
-                    Percent = (g.Sum(x => x.CashAmount) / totalExpenses) * 100
+                    Percent = Math.Round((g.Sum(x => x.CashAmount) / totalExpenses) * 100, 2)
                 })
-                .OrderByDescending(x => x.Total);
-
-            Console.WriteLine($"Expense percentages for {period}:");
-
-            foreach (var item in grouped)
-            {
-                Console.WriteLine(
-                    $"{item.Category} : " +
-                    $"{item.Total} ({item.Percent}%)"
-                );
-            }
-
-            Console.WriteLine($"Total expenses: {totalExpenses}");
+                .OrderByDescending(x => x.Total)
+                .ToList();
         }
 
         public class TopCategory()

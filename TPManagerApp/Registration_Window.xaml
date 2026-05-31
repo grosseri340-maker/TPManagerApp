@@ -1,7 +1,7 @@
 ﻿<Window x:Class="TPManagerApp.Registration_Window"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Registration" Height="450" Width="400">
+        Title="Registration" Height="420" Width="400">
 
     <Grid>
         <DockPanel x:Name="RegistrationPanel" Margin="50">
@@ -12,9 +12,6 @@
 
             <Label DockPanel.Dock="Top">Name</Label>
             <TextBox x:Name="NameBox" Width="298" DockPanel.Dock="Top"/>
-
-            <Label DockPanel.Dock="Top">Surname</Label>
-            <TextBox x:Name="SurnameBox" Width="298" DockPanel.Dock="Top"/>
 
             <Label DockPanel.Dock="Top">Email</Label>
             <TextBox x:Name="EmailBox" Width="298" DockPanel.Dock="Top"/>
